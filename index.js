@@ -9,6 +9,10 @@ const tunnel = localtunnel(4000, { subdomain: 'animebot' }, (err, tunnel) => {
   console.log('Tunnel Opened on : ' + tunnel.url)
 })
 
+tunnel.on('close,', () => {
+  console.log('Tunnels are Closed.')
+})
+
 app.get('/', (req, res) => res.send('test'))
 
 app.listen(4000, () => console.log('Server Listening on Port 4000'))
