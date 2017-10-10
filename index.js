@@ -20,7 +20,7 @@ app.get('/', (req, res) => res.send('localtunnel is successful'))
 
 app.get('/oauth', (req, res) => {
   if (!req.query.code) {
-    res.status(500)
+    res.sendstatus(500)
     res.send({'Error': 'Looks like we\'re not getting code.'})
     console.error('Looks like we\'re not getting code.')
   }
@@ -34,6 +34,7 @@ app.get('/oauth', (req, res) => {
       (err, response, body) => {
         if (err) {
           console.error(err)
+          res.sendStatus(500)
         }
         else {
           res.json(body)
