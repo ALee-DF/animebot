@@ -1,4 +1,6 @@
 const localtunnel = require('localtunnel')
+const express = require('express')
+const app = express()
 
 const tunnel = localtunnel(4000, { subdomain: 'animebot' }, (err, tunnel) => {
   if (err) {
@@ -7,4 +9,7 @@ const tunnel = localtunnel(4000, { subdomain: 'animebot' }, (err, tunnel) => {
   console.log('Tunnel Opened on : ' + tunnel.url)
 })
 
+app.get('/', (req, res) => res.send('test'))
+
+app.listen(4000, () => console.log('Server Listening on Port 4000'))
 console.log(tunnel)
