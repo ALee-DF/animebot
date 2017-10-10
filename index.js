@@ -41,6 +41,10 @@ app.get('/oauth', (req, res) => {
   }
 })
 
+app.post('/command', (req, res) => {
+  res.send('Connection to localtunnel verified. Ready for your next adventure?')
+})
+
 app.listen(4000, () => console.log('Server Listening on Port 4000'))
 
 console.log(clientId + ' ' + clientSecret)
