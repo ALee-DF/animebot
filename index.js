@@ -2,8 +2,8 @@ const localtunnel = require('localtunnel')
 const express = require('express')
 const request = require('request')
 const app = express()
-const clientId = 'redacted'
-const clientSecret = 'redacted'
+const clientId = process.env.clientId
+const clientSecret = process.env.ClientSecret
 
 const tunnel = localtunnel(4000, { subdomain: 'animebot' }, (err, tunnel) => {
   if (err) {
