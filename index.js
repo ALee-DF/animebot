@@ -50,6 +50,25 @@ app.post('/command', (req, res) => {
   res.send('Connection to localtunnel verified. Ready for your next adventure?')
 })
 
+function sendMessageToSlackResponseURL(responseURL, JSONmessage) {
+  const postOptions = {
+    uri: responseURL,
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json'
+    },
+    json: JSONmessage
+  }
+  request(postOptions, (err, res, body) => {
+    if (err) {
+      console.error(err)
+      res.sendStatus(500)
+    }
+  })
+}
+
+const message = {}
+
 app.post('/checklist', urlencodedParser, (req, res) => {
   const reqBody = req.body
   const responseURL = reqBody.response_url
@@ -57,7 +76,9 @@ app.post('/checklist', urlencodedParser, (req, res) => {
     console.error('Access Forbidden')
     res.sendStatus(403)
   }
-  console.log(responseURL)
+  else {
+    sendMessageToSlackResponseURL(responseURL, message)
+  }
 })
 
 app.listen(4000, () => console.log('Server Listening on Port 4000'))
