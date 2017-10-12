@@ -70,7 +70,6 @@ function sendMessageToSlackResponseURL(responseURL, JSONmessage) {
 }
 
 app.post('/checklist', urlencodedParser, (req, res) => {
-  res.status(200).end()
   const reqBody = req.body
   const responseURL = reqBody.response_url
   if (reqBody.token !== animebotVerificationToken) {
@@ -78,7 +77,9 @@ app.post('/checklist', urlencodedParser, (req, res) => {
     res.sendStatus(403)
   }
   else {
+    res.status(200).end()
     sendMessageToSlackResponseURL(responseURL, buttonsChecklist)
+    console.log(req.body)
   }
 })
 
@@ -99,6 +100,7 @@ app.post('/buttonaction', urlencodedParser, (req, res) => {
     buttonsChecklist['attachments'][attachmentID]['actions'][targetIndex]['style'] = 'default'
   }
   sendMessageToSlackResponseURL(actionJSONPayload.response_url, buttonsChecklist)
+  console.log(actionJSONPayload)
 })
 
 app.listen(4000, () => console.log('Server Listening on Port 4000'))
