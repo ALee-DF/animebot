@@ -1,6 +1,8 @@
 const localtunnel = require('localtunnel')
 const express = require('express')
 const request = require('request')
+const bodyParser = require('body-parser')
+const urlencodedParser = bodyParser.urlencoded({ extended: false })
 const app = express()
 const clientId = process.env.clientId
 const clientSecret = process.env.ClientSecret
@@ -47,7 +49,10 @@ app.post('/command', (req, res) => {
   res.send('Connection to localtunnel verified. Ready for your next adventure?')
 })
 
-app.post('/checklist', (req, res) => {
+app.post('/checklist', urlencodedParser, (req, res) => {
+  const reqBody = req.body
+  const responseURL = reqBody.response_url
+  console.log(responseURL)
 })
 
 app.listen(4000, () => console.log('Server Listening on Port 4000'))
