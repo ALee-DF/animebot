@@ -26,6 +26,7 @@ MongoClient.connect('mongodb://localhost/animebot', (err, db) => {
     console.error(err)
     process.exit(1)
   }
+  const username = db.collection('username')
   const app = express()
 
   app.get('/', (req, res) => res.send('localtunnel is successful'))
