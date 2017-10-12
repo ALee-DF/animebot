@@ -84,9 +84,20 @@ MongoClient.connect('mongodb://localhost/animebot', (err, db) => {
       res.sendStatus(403)
     }
     else {
-      res.status(200).end()
       username.find({user_id: req.body.user_id}).toArray()
         .then(userinfo => {
+          if (userinfo.length === 0) {
+            const newUser = Object.assign({}, {user_id: req.body.user_id}, {buttonsChecklist: buttonsChecklist})
+            username.insertOne(newUser)
+              .then(() => {
+                sendMessageToSlackResponseURL(responseURL, buttonsChecklist)
+                res.status(200).end()
+              })
+              .catch(err => {
+                console.error(err)
+                res.sendStatus(400)
+              })
+          }
         })
         .catch(err => {
           console.error(err)
