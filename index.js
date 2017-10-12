@@ -84,7 +84,7 @@ MongoClient.connect('mongodb://localhost/animebot', (err, db) => {
       res.sendStatus(403)
     }
     else {
-      username.find({user_id: req.body.user_id}).toArray()
+      username.find({ user_id: req.body.user_id }).toArray()
         .then(userinfo => {
           if (userinfo.length === 0) {
             const newUser = Object.assign({}, {user_id: req.body.user_id}, {buttonsChecklist: buttonsChecklist})
@@ -101,33 +101,50 @@ MongoClient.connect('mongodb://localhost/animebot', (err, db) => {
           else {
             const userChecklist = userinfo[0].buttonsChecklist
             sendMessageToSlackResponseURL(responseURL, userChecklist)
+            res.status(200).end()
           }
         })
         .catch(err => {
           console.error(err)
         })
-      sendMessageToSlackResponseURL(responseURL, buttonsChecklist)
     }
   })
 
   app.post('/buttonaction', urlencodedParser, (req, res) => {
     res.status(200).end()
     const actionJSONPayload = JSON.parse(req.body.payload)
+    const userID = { user_id: actionJSONPayload['user']['id'] }
     const attachmentID = Number(actionJSONPayload['attachment_id']) - 1
     const targetIndex = buttonsChecklist['attachments'][attachmentID]['actions']
       .findIndex(button => {
         return button.name === actionJSONPayload.actions[0].name
       })
-    if (actionJSONPayload.actions[0].value === 'deselected') {
-      buttonsChecklist['attachments'][attachmentID]['actions'][targetIndex]['value'] = 'selected'
-      buttonsChecklist['attachments'][attachmentID]['actions'][targetIndex]['style'] = 'primary'
-    }
-    else {
-      buttonsChecklist['attachments'][attachmentID]['actions'][targetIndex]['value'] = 'deselected'
-      buttonsChecklist['attachments'][attachmentID]['actions'][targetIndex]['style'] = 'default'
-    }
-    sendMessageToSlackResponseURL(actionJSONPayload.response_url, buttonsChecklist)
-    console.log(actionJSONPayload)
+
+    username.find(userID).toArray()
+      .then(userinfo => {
+        const userChecklist = userinfo[0].buttonsChecklist
+        if (actionJSONPayload.actions[0].value === 'deselected') {
+          userChecklist['attachments'][attachmentID]['actions'][targetIndex]['value'] = 'selected'
+          userChecklist['attachments'][attachmentID]['actions'][targetIndex]['style'] = 'primary'
+        }
+        else {
+          userChecklist['attachments'][attachmentID]['actions'][targetIndex]['value'] = 'deselected'
+          userChecklist['attachments'][attachmentID]['actions'][targetIndex]['style'] = 'default'
+        }
+        username.updateOne(userID, { $set: { buttonsChecklist: userChecklist } })
+          .then(() => {
+            sendMessageToSlackResponseURL(actionJSONPayload.response_url, userChecklist)
+            res.status(200).end()
+          })
+          .catch(err => {
+            console.error(err)
+            res.sendStatus(400)
+          })
+      })
+      .catch(err => {
+        console.error(err)
+        res.sendStatus(400)
+      })
   })
 
   app.listen(4000, () => console.log('Server Listening on Port 4000'))
