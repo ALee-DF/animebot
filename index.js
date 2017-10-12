@@ -2,11 +2,13 @@ const localtunnel = require('localtunnel')
 const express = require('express')
 const request = require('request')
 const bodyParser = require('body-parser')
+const checklistFile = require('./buttons-checklist.js')
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
 const app = express()
 const clientId = process.env.clientId
 const clientSecret = process.env.ClientSecret
 const animebotVerificationToken = process.env.animebot_verification_token
+const buttonsChecklist = checklistFile['buttonsChecklist']
 
 const tunnel = localtunnel(4000, { subdomain: 'animebot' }, (err, tunnel) => {
   if (err) {
@@ -67,8 +69,6 @@ function sendMessageToSlackResponseURL(responseURL, JSONmessage) {
   })
 }
 
-const message = {}
-
 app.post('/checklist', urlencodedParser, (req, res) => {
   const reqBody = req.body
   const responseURL = reqBody.response_url
@@ -77,7 +77,7 @@ app.post('/checklist', urlencodedParser, (req, res) => {
     res.sendStatus(403)
   }
   else {
-    sendMessageToSlackResponseURL(responseURL, message)
+    sendMessageToSlackResponseURL(responseURL, buttonsChecklist)
   }
 })
 
