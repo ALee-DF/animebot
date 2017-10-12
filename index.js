@@ -64,7 +64,6 @@ function sendMessageToSlackResponseURL(responseURL, JSONmessage) {
   request(postOptions, (err, res, body) => {
     if (err) {
       console.error(err)
-      res.sendStatus(500)
     }
   })
 }
