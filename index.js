@@ -88,7 +88,14 @@ app.post('/buttonaction', urlencodedParser, (req, res) => {
     .findIndex(button => {
       return button.name === actionJSONPayload.actions[0].name
     })
-  console.log(targetIndex)
+  if (actionJSONPayload.actions[0].value === 'deselected') {
+    buttonsChecklist['attachments'][attachmentID]['actions'][targetIndex]['value'] = 'selected'
+    buttonsChecklist['attachments'][attachmentID]['actions'][targetIndex]['style'] = 'primary'
+  }
+  else {
+    buttonsChecklist['attachments'][attachmentID]['actions'][targetIndex]['value'] = 'deselected'
+    buttonsChecklist['attachments'][attachmentID]['actions'][targetIndex]['style'] = 'default'
+  }
 })
 
 app.listen(4000, () => console.log('Server Listening on Port 4000'))
