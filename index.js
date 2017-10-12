@@ -96,6 +96,7 @@ app.post('/buttonaction', urlencodedParser, (req, res) => {
     buttonsChecklist['attachments'][attachmentID]['actions'][targetIndex]['value'] = 'deselected'
     buttonsChecklist['attachments'][attachmentID]['actions'][targetIndex]['style'] = 'default'
   }
+  sendMessageToSlackResponseURL(actionJSONPayload.response_url, buttonsChecklist)
 })
 
 app.listen(4000, () => console.log('Server Listening on Port 4000'))
