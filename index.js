@@ -81,7 +81,14 @@ app.post('/checklist', urlencodedParser, (req, res) => {
   }
 })
 
-app.post('/buttonaction', (req, res) => {
+app.post('/buttonaction', urlencodedParser, (req, res) => {
+  const actionJSONPayload = JSON.parse(req.body.payload)
+  const attachmentID = Number(actionJSONPayload['attachment_id']) - 1
+  const targetIndex = buttonsChecklist['attachments'][attachmentID]['actions']
+    .findIndex(button => {
+      return button.name === actionJSONPayload.actions[0].name
+    })
+  console.log(targetIndex)
 })
 
 app.listen(4000, () => console.log('Server Listening on Port 4000'))
