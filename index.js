@@ -47,4 +47,7 @@ app.post('/command', (req, res) => {
   res.send('Connection to localtunnel verified. Ready for your next adventure?')
 })
 
+app.post('/checklist', (req, res) => {
+})
+
 app.listen(4000, () => console.log('Server Listening on Port 4000'))
