@@ -1,5 +1,5 @@
 module.exports.buttonsChecklist = {
-  'text': 'Select the genres you want to watch!',
+  'text': 'Select the genres of anime you want to watch \\(^o^)/',
   'attachments': [
     {
       'fallback': 'You are unable to choose a genre',
