@@ -98,6 +98,10 @@ MongoClient.connect('mongodb://localhost/animebot', (err, db) => {
                 res.sendStatus(400)
               })
           }
+          else {
+            const userChecklist = userinfo[0].buttonsChecklist
+            sendMessageToSlackResponseURL(responseURL, userChecklist)
+          }
         })
         .catch(err => {
           console.error(err)
