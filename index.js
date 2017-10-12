@@ -85,8 +85,13 @@ MongoClient.connect('mongodb://localhost/animebot', (err, db) => {
     }
     else {
       res.status(200).end()
+      username.find({user_id: req.body.user_id}).toArray()
+        .then(userinfo => {
+        })
+        .catch(err => {
+          console.error(err)
+        })
       sendMessageToSlackResponseURL(responseURL, buttonsChecklist)
-      console.log(req.body)
     }
   })
 
