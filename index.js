@@ -70,6 +70,7 @@ function sendMessageToSlackResponseURL(responseURL, JSONmessage) {
 }
 
 app.post('/checklist', urlencodedParser, (req, res) => {
+  res.status(200).end()
   const reqBody = req.body
   const responseURL = reqBody.response_url
   if (reqBody.token !== animebotVerificationToken) {
@@ -82,6 +83,7 @@ app.post('/checklist', urlencodedParser, (req, res) => {
 })
 
 app.post('/buttonaction', urlencodedParser, (req, res) => {
+  res.status(200).end()
   const actionJSONPayload = JSON.parse(req.body.payload)
   const attachmentID = Number(actionJSONPayload['attachment_id']) - 1
   const targetIndex = buttonsChecklist['attachments'][attachmentID]['actions']
