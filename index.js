@@ -6,6 +6,7 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false })
 const app = express()
 const clientId = process.env.clientId
 const clientSecret = process.env.ClientSecret
+const animebotVerificationToken = process.env.animebot_verification_token
 
 const tunnel = localtunnel(4000, { subdomain: 'animebot' }, (err, tunnel) => {
   if (err) {
@@ -52,6 +53,10 @@ app.post('/command', (req, res) => {
 app.post('/checklist', urlencodedParser, (req, res) => {
   const reqBody = req.body
   const responseURL = reqBody.response_url
+  if (reqBody.token !== animebotVerificationToken) {
+    console.error('Access Forbidden')
+    res.sendStatus(403)
+  }
   console.log(responseURL)
 })
 
