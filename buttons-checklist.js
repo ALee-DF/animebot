@@ -8,35 +8,35 @@ module.exports.buttonsChecklist = {
       attachment_type: 'default',
       actions: [
         {
-          name: 'Action',
+          name: 'action',
           text: 'Action',
           type: 'button',
           value: 'deselected',
           style: 'default'
         },
         {
-          name: 'Adventure',
+          name: 'adventure',
           text: 'Adventure',
           type: 'button',
           value: 'deselected',
           style: 'default'
         },
         {
-          name: 'Cars',
+          name: 'cars',
           text: 'Cars',
           type: 'button',
           value: 'deselected',
           style: 'default'
         },
         {
-          name: 'Comedy',
+          name: 'comedy',
           text: 'Comedy',
           type: 'button',
           value: 'deselected',
           style: 'default'
         },
         {
-          name: 'Dementia',
+          name: 'dementia',
           text: 'Dementia',
           type: 'button',
           value: 'deselected',
@@ -51,35 +51,35 @@ module.exports.buttonsChecklist = {
       attachment_type: 'default',
       actions: [
         {
-          name: 'Demons',
+          name: 'demons',
           text: 'Demons',
           type: 'button',
           value: 'deselected',
           style: 'default'
         },
         {
-          name: 'Drama',
+          name: 'drama',
           text: 'Drama',
           type: 'button',
           value: 'deselected',
           style: 'default'
         },
         {
-          name: 'Ecchi',
+          name: 'ecchi',
           text: 'Ecchi',
           type: 'button',
           value: 'deselected',
           style: 'default'
         },
         {
-          name: 'Fantasy',
+          name: 'fantasy',
           text: 'Fantasy',
           type: 'button',
           value: 'deselected',
           style: 'default'
         },
         {
-          name: 'Game',
+          name: 'game',
           text: 'Game',
           type: 'button',
           value: 'deselected',
@@ -94,14 +94,14 @@ module.exports.buttonsChecklist = {
       attachment_type: 'default',
       actions: [
         {
-          name: 'Harem',
+          name: 'harem',
           text: 'Harem',
           type: 'button',
           value: 'deselected',
           style: 'default'
         },
         {
-          name: 'Hentai',
+          name: 'hentai',
           text: 'Hentai',
           type: 'button',
           value: 'deselected',
@@ -116,21 +116,21 @@ module.exports.buttonsChecklist = {
           }
         },
         {
-          name: 'Historical',
+          name: 'historical',
           text: 'Historical',
           type: 'button',
           value: 'deselected',
           style: 'default'
         },
         {
-          name: 'Horror',
+          name: 'horror',
           text: 'Horror',
           type: 'button',
           value: 'deselected',
           style: 'default'
         },
         {
-          name: 'Josei',
+          name: 'josei',
           text: 'Josei',
           type: 'button',
           value: 'deselected',
@@ -145,35 +145,35 @@ module.exports.buttonsChecklist = {
       attachment_type: 'default',
       actions: [
         {
-          name: 'Kids',
+          name: 'kids',
           text: 'Kids',
           type: 'button',
           value: 'deselected',
           style: 'default'
         },
         {
-          name: 'Magic',
+          name: 'magic',
           text: 'Magic',
           type: 'button',
           value: 'deselected',
           style: 'default'
         },
         {
-          name: 'Martial Arts',
+          name: 'martial Arts',
           text: 'Martial Arts',
           type: 'button',
           value: 'deselected',
           style: 'default'
         },
         {
-          name: 'Mecha',
+          name: 'mecha',
           text: 'Mecha',
           type: 'button',
           value: 'deselected',
           style: 'default'
         },
         {
-          name: 'Military',
+          name: 'military',
           text: 'Military',
           type: 'button',
           value: 'deselected',
@@ -188,35 +188,35 @@ module.exports.buttonsChecklist = {
       attachment_type: 'default',
       actions: [
         {
-          name: 'Music',
+          name: 'music',
           text: 'Music',
           type: 'button',
           value: 'deselected',
           style: 'default'
         },
         {
-          name: 'Mystery',
+          name: 'mystery',
           text: 'Mystery',
           type: 'button',
           value: 'deselected',
           style: 'default'
         },
         {
-          name: 'Parody',
+          name: 'parody',
           text: 'Parody',
           type: 'button',
           value: 'deselected',
           style: 'default'
         },
         {
-          name: 'Police',
+          name: 'police',
           text: 'Police',
           type: 'button',
           value: 'deselected',
           style: 'default'
         },
         {
-          name: 'Psychological',
+          name: 'psychological',
           text: 'Psychological',
           type: 'button',
           value: 'deselected',
@@ -231,35 +231,35 @@ module.exports.buttonsChecklist = {
       attachment_type: 'default',
       actions: [
         {
-          name: 'Romance',
+          name: 'romance',
           text: 'Romance',
           type: 'button',
           value: 'deselected',
           style: 'default'
         },
         {
-          name: 'Samurai',
+          name: 'samurai',
           text: 'Samurai',
           type: 'button',
           value: 'deselected',
           style: 'default'
         },
         {
-          name: 'School',
+          name: 'school',
           text: 'School',
           type: 'button',
           value: 'deselected',
           style: 'default'
         },
         {
-          name: 'Sci-Fi',
+          name: 'sci-fi',
           text: 'Sci-Fi',
           type: 'button',
           value: 'deselected',
           style: 'default'
         },
         {
-          name: 'Seinen',
+          name: 'seinen',
           text: 'Seinen',
           type: 'button',
           value: 'deselected',
@@ -274,35 +274,35 @@ module.exports.buttonsChecklist = {
       attachment_type: 'default',
       actions: [
         {
-          name: 'Shoujo',
+          name: 'shoujo',
           text: 'Shoujo',
           type: 'button',
           value: 'deselected',
           style: 'default'
         },
         {
-          name: 'Shoujo Ai',
+          name: 'shoujo Ai',
           text: 'Shoujo Ai',
           type: 'button',
           value: 'deselected',
           style: 'default'
         },
         {
-          name: 'Shounen',
+          name: 'shounen',
           text: 'Shounen',
           type: 'button',
           value: 'deselected',
           style: 'default'
         },
         {
-          name: 'Shounen Ai',
+          name: 'shounen Ai',
           text: 'Shounen Ai',
           type: 'button',
           value: 'deselected',
           style: 'default'
         },
         {
-          name: 'Slice of Life',
+          name: 'slice of life',
           text: 'Slice of Life',
           type: 'button',
           value: 'deselected',
@@ -317,35 +317,35 @@ module.exports.buttonsChecklist = {
       attachment_type: 'default',
       actions: [
         {
-          name: 'Space',
+          name: 'space',
           text: 'Space',
           type: 'button',
           value: 'deselected',
           style: 'default'
         },
         {
-          name: 'Sports',
+          name: 'sports',
           text: 'Sports',
           type: 'button',
           value: 'deselected',
           style: 'default'
         },
         {
-          name: 'Super Power',
+          name: 'super power',
           text: 'Super Power',
           type: 'button',
           value: 'deselected',
           style: 'default'
         },
         {
-          name: 'Supernatural',
+          name: 'supernatural',
           text: 'Supernatural',
           type: 'button',
           value: 'deselected',
           style: 'default'
         },
         {
-          name: 'Thriller',
+          name: 'thriller',
           text: 'Thriller',
           type: 'button',
           value: 'deselected',
@@ -360,21 +360,21 @@ module.exports.buttonsChecklist = {
       attachment_type: 'default',
       actions: [
         {
-          name: 'Vampire',
+          name: 'vampire',
           text: 'Vampire',
           type: 'button',
           value: 'deselected',
           style: 'default'
         },
         {
-          name: 'Yaoi',
+          name: 'yaoi',
           text: 'Yaoi',
           type: 'button',
           value: 'deselected',
           style: 'default'
         },
         {
-          name: 'Yuri',
+          name: 'yuri',
           text: 'Yuri',
           type: 'button',
           value: 'deselected',
