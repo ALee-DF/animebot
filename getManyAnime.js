@@ -1,5 +1,6 @@
 const request = require('request')
 const parseString = require('xml2js').parseString
+const massageAnnData = require('./massageAnnData')
 
 function getAnnAnimeInfo(id) {
   return new Promise(function (resolve, reject) {
@@ -18,4 +19,5 @@ function getAnnAnimeInfo(id) {
   })
 }
 
-getAnnAnimeInfo(15784).then(value => console.log(value))
+getAnnAnimeInfo(15784)
+  .then(massageAnnData)
