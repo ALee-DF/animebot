@@ -8,7 +8,7 @@ const getManyAnime = require('./getManyAnime')
 const getTotalAnime = require('./getTotalAnime')
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
 const clientId = process.env.clientId
-const clientSecret = process.env.ClientSecret
+const clientSecret = process.env.clientSecret
 const animebotVerificationToken = process.env.animebot_verification_token
 const buttonsChecklist = checklistFile['buttonsChecklist']
 
@@ -111,6 +111,47 @@ MongoClient.connect('mongodb://localhost/animebot', (err, db) => {
           console.error(err)
         })
     }
+  })
+
+  function getUserPreferences(checklist) {
+    const genres = []
+    for (let i = 0; i < checklist.attachments.length; i++) {
+      for (let j = 0; j < checklist.attachments[i].actions.length; j++) {
+        if (checklist.attachments[i].actions[j].value === 'selected') {
+          genres.push(checklist.attachments[i].actions[j].name)
+        }
+      }
+    }
+    return genres
+  }
+
+  app.post('/recommendation', urlencodedParser, (req, res) => {
+    const reqBody = req.body
+    const responseURL = reqBody.response_url
+    if (reqBody.token !== animebotVerificationToken) {
+      console.error('Access Forbidden')
+      res.sendStatus(403)
+      return
+    }
+    username.find({ user_id: req.body.user_id }).toArray()
+      .then(userinfo => {
+        if (userinfo.length) {
+          const preferences = getUserPreferences(userinfo[0].buttonsChecklist)
+          console.log(preferences)
+        }
+        else {
+          const message = {
+            text: 'Please Type "/select-anime-genres" to input your preferences' +
+              'before requesting anime recommendations. Thank you.'
+          }
+          sendMessageToSlackResponseURL(responseURL, message)
+
+        }
+      })
+      .catch(err => {
+        console.error(err)
+        res.sendStatus(400)
+      })
   })
 
   app.post('/buttonaction', urlencodedParser, (req, res) => {
