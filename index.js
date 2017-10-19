@@ -137,7 +137,26 @@ MongoClient.connect('mongodb://localhost/animebot', (err, db) => {
       .then(userinfo => {
         if (userinfo.length) {
           const preferences = getUserPreferences(userinfo[0].buttonsChecklist)
-          console.log(preferences)
+          const searchFilter = {}
+          if (preferences.find(genre => genre === 'erotica')) {
+            searchFilter.genres = {
+              $in: preferences
+            }
+          }
+          else {
+            searchFilter.genres = {
+              $in: preferences,
+              $ne: 'erotica'
+            }
+          }
+          console.log(searchFilter)
+          anime.find(searchFilter).toArray()
+            .then(anime => {
+            })
+            .catch(err => {
+              console.error(err)
+              process.exit(1)
+            })
         }
         else {
           const message = {
