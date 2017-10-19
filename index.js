@@ -4,9 +4,12 @@ const request = require('request')
 const bodyParser = require('body-parser')
 const { MongoClient } = require('mongodb')
 const checklistFile = require('./buttons-checklist.js')
+const getManyAnime = require('./getManyAnime')
+const getTotalAnime = require('./getTotalAnime')
+const renderAnimeRecommendation = require('./renderAnimeRecommendation')
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
 const clientId = process.env.clientId
-const clientSecret = process.env.ClientSecret
+const clientSecret = process.env.clientSecret
 const animebotVerificationToken = process.env.animebot_verification_token
 const buttonsChecklist = checklistFile['buttonsChecklist']
 
@@ -27,6 +30,7 @@ MongoClient.connect('mongodb://localhost/animebot', (err, db) => {
     process.exit(1)
   }
   const username = db.collection('username')
+  const anime = db.collection('anime')
   const app = express()
 
   app.get('/', (req, res) => res.send('localtunnel is successful'))
@@ -110,6 +114,69 @@ MongoClient.connect('mongodb://localhost/animebot', (err, db) => {
     }
   })
 
+  function getUserPreferences(checklist) {
+    const genres = []
+    for (let i = 0; i < checklist.attachments.length; i++) {
+      for (let j = 0; j < checklist.attachments[i].actions.length; j++) {
+        if (checklist.attachments[i].actions[j].value === 'selected') {
+          genres.push(checklist.attachments[i].actions[j].name)
+        }
+      }
+    }
+    return genres
+  }
+
+  app.post('/recommendation', urlencodedParser, (req, res) => {
+    const reqBody = req.body
+    const responseURL = reqBody.response_url
+    if (reqBody.token !== animebotVerificationToken) {
+      console.error('Access Forbidden')
+      res.sendStatus(403)
+      return
+    }
+    username.find({ user_id: req.body.user_id }).toArray()
+      .then(userinfo => {
+        if (userinfo.length) {
+          const preferences = getUserPreferences(userinfo[0].buttonsChecklist)
+          const searchFilter = {}
+          if (preferences.find(genre => genre === 'erotica')) {
+            searchFilter.genres = {
+              $in: preferences
+            }
+          }
+          else {
+            searchFilter.genres = {
+              $in: preferences,
+              $ne: 'erotica'
+            }
+          }
+          anime.find(searchFilter).toArray()
+            .then(animeResults => {
+              const randomAnime = animeResults[Math.floor(Math.random() * animeResults.length)]
+              sendMessageToSlackResponseURL(responseURL, renderAnimeRecommendation(randomAnime))
+              res.status(200).end()
+            })
+            .catch(err => {
+              console.error(err)
+              res.sendStatus(400)
+            })
+        }
+        else {
+          const message = {
+            text: 'Please Type "/select-anime-genres" to input your preferences' +
+              'before requesting anime recommendations. Thank you.'
+          }
+          sendMessageToSlackResponseURL(responseURL, message)
+          res.status(200).end()
+
+        }
+      })
+      .catch(err => {
+        console.error(err)
+        res.sendStatus(400)
+      })
+  })
+
   app.post('/buttonaction', urlencodedParser, (req, res) => {
     res.status(200).end()
     const actionJSONPayload = JSON.parse(req.body.payload)
@@ -147,5 +214,47 @@ MongoClient.connect('mongodb://localhost/animebot', (err, db) => {
       })
   })
 
+  setInterval(() => {
+    getTotalAnime()
+      .then(last => {
+        getManyAnime(1, Number(last), 1000, massaged => {
+          if (!massaged) return
+          const annID = { annID: massaged.annID }
+          anime.find(annID).toArray()
+            .then(animeInfo => {
+              if (animeInfo.length) {
+                anime
+                  .updateOne(annID, { $set: massaged })
+                  .then(() => {
+                    console.log('annID ' + massaged.annID + ' updated')
+                  })
+                  .catch(err => {
+                    console.error(err)
+                    process.exit(1)
+                  })
+              }
+              else {
+                anime
+                  .insertOne(massaged)
+                  .then(() => {
+                    console.log('annID ' + massaged.annID + ' added')
+                  })
+                  .catch(err => {
+                    console.error(err)
+                    process.exit(1)
+                  })
+              }
+            })
+            .catch(err => {
+              console.error(err)
+              process.exit(1)
+            })
+        })
+      })
+      .catch(err => {
+        console.error(err)
+        process.exit(1)
+      })
+  }, 1209600000)
   app.listen(4000, () => console.log('Server Listening on Port 4000'))
 })
