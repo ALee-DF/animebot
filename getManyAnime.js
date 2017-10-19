@@ -2,6 +2,25 @@ const request = require('request')
 const parseString = require('xml2js').parseString
 const massageAnnData = require('./massageAnnData')
 
+module.exports = function getManyAnime(first, last, wait, save) {
+  getAnnAnimeInfo(first)
+    .then(massageAnnData)
+    .then(save)
+    .then(() => {
+      if (first === last) {
+        console.log('done')
+        return
+      }
+      setTimeout(() => {
+        getManyAnime(++first, last, wait, save)
+      }, wait)
+    })
+    .catch(err => {
+      console.error(err)
+      process.exit(1)
+    })
+}
+
 function getAnnAnimeInfo(id) {
   return new Promise(function (resolve, reject) {
     request('http://cdn.animenewsnetwork.com/encyclopedia/api.xml?anime=' + id, (err, response, body) => {
@@ -18,32 +37,3 @@ function getAnnAnimeInfo(id) {
     })
   })
 }
-
-function getTotalAnime() {
-  return new Promise(function (resolve, reject) {
-    request('http://www.animenewsnetwork.com/encyclopedia/reports.xml?id=148&nlist=1', function (error, response, body) {
-      if (error) {
-        return reject(error)
-      }
-      else {
-        parseString(body, (err, result) => {
-          if (err) {
-            return reject(error)
-          }
-          return resolve(result['report']['item'][0]['anime'][0]['$']['href'].replace('/encyclopedia/anime.php?id=', ''))
-        })
-      }
-    })
-  })
-}
-
-getTotalAnime()
-  .then(value => {
-    console.log(value)
-  })
-
-getAnnAnimeInfo(15784)
-  .then(massageAnnData)
-  .then(value => {
-    console.log(value)
-  })

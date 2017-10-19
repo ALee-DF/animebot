@@ -4,6 +4,8 @@ const request = require('request')
 const bodyParser = require('body-parser')
 const { MongoClient } = require('mongodb')
 const checklistFile = require('./buttons-checklist.js')
+const getManyAnime = require('./getManyAnime')
+const getTotalAnime = require('./getTotalAnime')
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
 const clientId = process.env.clientId
 const clientSecret = process.env.ClientSecret
@@ -27,6 +29,7 @@ MongoClient.connect('mongodb://localhost/animebot', (err, db) => {
     process.exit(1)
   }
   const username = db.collection('username')
+  const anime = db.collection('anime')
   const app = express()
 
   app.get('/', (req, res) => res.send('localtunnel is successful'))
@@ -147,5 +150,47 @@ MongoClient.connect('mongodb://localhost/animebot', (err, db) => {
       })
   })
 
+  setInterval(() => {
+    getTotalAnime()
+      .then(last => {
+        getManyAnime(1, last, 1000, massaged => {
+          if (!massaged) return
+          const annID = { annID: massaged.annID }
+          anime.find(annID).toArray()
+            .then(animeInfo => {
+              if (animeInfo.length) {
+                anime
+                  .updateOne(annID, { $set: massaged })
+                  .then(() => {
+                    console.log('annID ' + massaged.annID + ' updated')
+                  })
+                  .catch(err => {
+                    console.error(err)
+                    process.exit(1)
+                  })
+              }
+              else {
+                anime
+                  .insertOne(massaged)
+                  .then(() => {
+                    console.log('annID ' + massaged.annID + ' added')
+                  })
+                  .catch(err => {
+                    console.error(err)
+                    process.exit(1)
+                  })
+              }
+            })
+            .catch(err => {
+              console.error(err)
+              process.exit(1)
+            })
+        })
+      })
+      .catch(err => {
+        console.error(err)
+        process.exit(1)
+      })
+  }, 1209600000)
   app.listen(4000, () => console.log('Server Listening on Port 4000'))
 })

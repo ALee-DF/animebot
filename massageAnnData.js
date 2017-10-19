@@ -3,7 +3,7 @@ module.exports = function massageAnnData(raw) {
   const { info, credit, $ } = raw
   const { id, type, name, precision } = $
   const massaged = {
-    id,
+    annID: id,
     name,
     alternative_names: getAlternativeNames(info),
     type,
@@ -30,7 +30,7 @@ function getAnnAttribute(info, attribute) {
 function getImageUrl(info) {
   if (!info) return null
   const imageUrlsList = info[0].img
-  if (!imageUrlsList.length) return null
+  if (!imageUrlsList) return null
   return imageUrlsList[imageUrlsList.length - 1].$.src
 }
 
