@@ -113,7 +113,7 @@ module.exports.buttonsChecklist = {
           text: 'Science Fiction',
           type: 'button',
           value: 'deselected',
-          style: 'default',
+          style: 'default'
         },
         {
           name: 'slice of life',
