@@ -1,6 +1,6 @@
 module.exports = function massageAnnData(raw) {
   if (!raw) return null
-  const { info, credit, $ } = raw
+  const { info, credit, $, ratings } = raw
   const { id, type, name, precision } = $
   const massaged = {
     annID: id,
@@ -15,9 +15,15 @@ module.exports = function massageAnnData(raw) {
     studio: getStudio(credit),
     genres: getGenres(info),
     themes: getThemes(info),
+    score: getScore(ratings),
     image: getImageUrl(info)
   }
   return massaged
+}
+
+function getScore(ratings) {
+  if (!ratings) return null
+  return ratings[0].$.weighted_score
 }
 
 function getAnnAttribute(info, attribute) {

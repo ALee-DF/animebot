@@ -6,6 +6,7 @@ const { MongoClient } = require('mongodb')
 const checklistFile = require('./buttons-checklist.js')
 const getManyAnime = require('./getManyAnime')
 const getTotalAnime = require('./getTotalAnime')
+const renderAnimeRecommendation = require('./renderAnimeRecommendation')
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
 const clientId = process.env.clientId
 const clientSecret = process.env.clientSecret
@@ -149,13 +150,15 @@ MongoClient.connect('mongodb://localhost/animebot', (err, db) => {
               $ne: 'erotica'
             }
           }
-          console.log(searchFilter)
           anime.find(searchFilter).toArray()
-            .then(anime => {
+            .then(animeResults => {
+              const randomAnime = animeResults[Math.floor(Math.random() * animeResults.length)]
+              sendMessageToSlackResponseURL(responseURL, renderAnimeRecommendation(randomAnime))
+              res.status(200).end()
             })
             .catch(err => {
               console.error(err)
-              process.exit(1)
+              res.sendStatus(400)
             })
         }
         else {
@@ -164,6 +167,7 @@ MongoClient.connect('mongodb://localhost/animebot', (err, db) => {
               'before requesting anime recommendations. Thank you.'
           }
           sendMessageToSlackResponseURL(responseURL, message)
+          res.status(200).end()
 
         }
       })
@@ -213,7 +217,7 @@ MongoClient.connect('mongodb://localhost/animebot', (err, db) => {
   setInterval(() => {
     getTotalAnime()
       .then(last => {
-        getManyAnime(1, last, 1000, massaged => {
+        getManyAnime(1, Number(last), 1000, massaged => {
           if (!massaged) return
           const annID = { annID: massaged.annID }
           anime.find(annID).toArray()
