@@ -36,19 +36,11 @@ module.exports.buttonsChecklist = {
           style: 'default'
         },
         {
-          name: 'erotica',
-          text: 'Erotica',
+          name: 'fantasy',
+          text: 'Fantasy',
           type: 'button',
           value: 'deselected',
-          style: 'default',
-          confirm: {
-            title: 'Are you a legal adult?',
-            text: 'This genre contains pornographic content that is not ' +
-              'suitable for underaged users. If you are a legal adult, ' +
-              'proceed at your own risk.',
-            ok_text: 'Yes',
-            dismiss_text: 'No'
-          }
+          style: 'default'
         }
       ]
     },
@@ -58,13 +50,6 @@ module.exports.buttonsChecklist = {
       color: '#3AA3E3',
       attachment_type: 'default',
       actions: [
-        {
-          name: 'fantasy',
-          text: 'Fantasy',
-          type: 'button',
-          value: 'deselected',
-          style: 'default'
-        },
         {
           name: 'horror',
           text: 'Horror',
@@ -92,6 +77,13 @@ module.exports.buttonsChecklist = {
           type: 'button',
           value: 'deselected',
           style: 'default'
+        },
+        {
+          name: 'romance',
+          text: 'Romance',
+          type: 'button',
+          value: 'deselected',
+          style: 'default'
         }
       ]
     },
@@ -101,13 +93,6 @@ module.exports.buttonsChecklist = {
       color: '#3AA3E3',
       attachment_type: 'default',
       actions: [
-        {
-          name: 'romance',
-          text: 'Romance',
-          type: 'button',
-          value: 'deselected',
-          style: 'default'
-        },
         {
           name: 'science fiction',
           text: 'Science Fiction',
@@ -135,15 +120,7 @@ module.exports.buttonsChecklist = {
           type: 'button',
           value: 'deselected',
           style: 'default'
-        }
-      ]
-    },
-    {
-      fallback: 'You are unable to choose a genre',
-      callback_id: 'genre',
-      color: '#3AA3E3',
-      attachment_type: 'default',
-      actions: [
+        },
         {
           name: 'tournament',
           text: 'Tournament',

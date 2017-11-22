@@ -1,3 +1,4 @@
+require('dotenv').config()
 const localtunnel = require('localtunnel')
 const express = require('express')
 const request = require('request')
@@ -139,16 +140,9 @@ MongoClient.connect('mongodb://localhost/animebot', (err, db) => {
         if (userinfo.length) {
           const preferences = getUserPreferences(userinfo[0].buttonsChecklist)
           const searchFilter = {}
-          if (preferences.find(genre => genre === 'erotica')) {
-            searchFilter.genres = {
-              $in: preferences
-            }
-          }
-          else {
-            searchFilter.genres = {
-              $in: preferences,
-              $ne: 'erotica'
-            }
+          searchFilter.genres = {
+            $in: preferences,
+            $ne: 'erotica'
           }
           anime.find(searchFilter).toArray()
             .then(animeResults => {
